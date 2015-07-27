@@ -3,6 +3,8 @@
 [AngularJS](https://angularjs.org/) directive for switching the DOM in the period.
 
 [![Build Status](https://travis-ci.org/rymizuki/node-hariko.svg?branch=master)](https://travis-ci.org/rymizuki/node-hariko)
+[![Code Climate](https://codeclimate.com/github/rymizuki/node-hariko/badges/gpa.svg)](https://codeclimate.com/github/rymizuki/node-hariko)
+[![Test Coverage](https://codeclimate.com/github/rymizuki/node-hariko/badges/coverage.svg)](https://codeclimate.com/github/rymizuki/node-hariko/coverage)
 
 ## Installation
 
