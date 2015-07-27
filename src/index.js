@@ -28,7 +28,7 @@
       controller: function ($scope) {
         this.cases = {};
       },
-      link: function link (scope, element, attr, ngPeriodController) {
+      link: function (scope, element, attr, ngPeriodController) {
         var previousTimers          = [],
             previousLeaveAnimations = [],
             selectedScopes          = [],
@@ -50,7 +50,7 @@
           for (var index=0; index<previousTimers.length; index++)
             $timeout.cancel(previousTimers[index]);
 
-          if ((now < startAt) && (now < endAt)) { // previous: 開始時間が未来 and 終了時間が未来
+          if ((now < startAt) && (now < endAt)) { // previous: it is a future start time and future end time.
             previousTimers.push($timeout(function () {
               updatePeriodView(PERIOD_STATE_DURING);
               previousTimers.push($timeout(function () {
@@ -58,12 +58,12 @@
               }, (endAt - new Date().getTime())));
             }, (startAt - now)));
             periodState = PERIOD_STATE_PREV;
-          } else if ((startAt <= now) && (now <= endAt)) { // during: 開始時間が過去 and 終了時間が未来
+          } else if ((startAt <= now) && (now <= endAt)) { // during: It is a past start time and future end time.
             previousTimers.push($timeout(function () {
               updatePeriodView(PERIOD_STATE_AFTER);
             }, (endAt - now)));
             periodState = PERIOD_STATE_DURING;
-          } else if ((endAt < now) && (startAt < now)) { // after 終了時間が過去 and 開始時間が過去
+          } else if ((endAt < now) && (startAt < now)) { // after: It is a past start time and past end time.
             periodState = PERIOD_STATE_AFTER;
           }
           updatePeriodView(periodState);
