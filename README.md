@@ -2,6 +2,8 @@
 
 [AngularJS](https://angularjs.org/) directive for switching the DOM in the period.
 
+[![Build Status](https://travis-ci.org/rymizuki/node-hariko.svg?branch=master)](https://travis-ci.org/rymizuki/node-hariko)
+
 ## Installation
 
 use [bower](http://bower.io/):
