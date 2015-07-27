@@ -23,7 +23,7 @@
   // @inject
   function ngPeriodDirective ($animate, $timeout) {
     return {
-      restrict: 'E',
+      restrict: 'A',
       // @inject
       controller: ["$scope", function ($scope) {
         this.cases = {};

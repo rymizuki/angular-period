@@ -33,7 +33,7 @@ Add the directive in your module.
 
 ```html
 <body>
-  <ng-period ng-period-start="'2015-06-22 00:00:00'" ng-period-end="'2015-06-29 23:59:59'">
+  <div ng-period ng-period-start="'2015-06-22 00:00:00'" ng-period-end="'2015-06-29 23:59:59'">
     <div ng-period-when="previous">
       <p>The previous period when this section is displayed.</p>
     </div>
@@ -43,7 +43,7 @@ Add the directive in your module.
     <div ng-period-when="after">
       <p>The after period when this section is displayed.</p>
     </div>
-  </ng-period>
+  </div>
 </body>
 ```
 
