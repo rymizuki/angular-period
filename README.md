@@ -2,9 +2,10 @@
 
 [AngularJS](https://angularjs.org/) directive for switching the DOM in the period.
 
-[![Build Status](https://travis-ci.org/rymizuki/node-hariko.svg?branch=master)](https://travis-ci.org/rymizuki/node-hariko)
-[![Code Climate](https://codeclimate.com/github/rymizuki/node-hariko/badges/gpa.svg)](https://codeclimate.com/github/rymizuki/node-hariko)
-[![Test Coverage](https://codeclimate.com/github/rymizuki/node-hariko/badges/coverage.svg)](https://codeclimate.com/github/rymizuki/node-hariko/coverage)
+[![Build Status](https://travis-ci.org/rymizuki/angular-period.svg?branch=master)](https://travis-ci.org/rymizuki/angular-period)
+[![Code Climate](https://codeclimate.com/github/rymizuki/angular-period/badges/gpa.svg)](https://codeclimate.com/github/rymizuki/angular-period)
+[![Test Coverage](https://codeclimate.com/github/rymizuki/angular-period/badges/coverage.svg)](https://codeclimate.com/github/rymizuki/angular-period/coverage)
+[![Dependency Status](https://gemnasium.com/rymizuki/angular-period.svg)](https://gemnasium.com/rymizuki/angular-period) 
 
 ## Installation
 
