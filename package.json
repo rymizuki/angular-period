@@ -2,7 +2,7 @@
   "name": "angular-period",
   "version": "0.0.0",
   "description": "AngularJS Directive for switching the DOM in the period.",
-  "main": "index.js",
+  "main": "dist/angular-period.min.js",
   "scripts": {
     "bump": "mversion $1 -m '%s'",
     "build": "gulp build",
