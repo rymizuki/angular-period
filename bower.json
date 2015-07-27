@@ -1,0 +1,22 @@
+{
+  "name": "angular-period",
+  "version": "0.0.0",
+  "homepage": "https://github.com/rymizuki/angular-period",
+  "description": "AngularJS Directive for switching the DOM in the period.",
+  "main": "dist/angular-period.min.js",
+  "keywords": [
+    "angular.js",
+    "period"
+  ],
+  "authors": [
+    "mizuki_r <ry.mizuki@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

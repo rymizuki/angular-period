@@ -1,0 +1,38 @@
+{
+  "name": "angular-period",
+  "version": "0.0.0",
+  "description": "AngularJS Directive for switching the DOM in the period.",
+  "main": "index.js",
+  "scripts": {
+    "bump": "mversion $1 -m '%s'",
+    "build": "gulp build",
+    "start": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "angular.js"
+  ],
+  "author": "mizuki_r <ry.mizuki@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "coffee-script": "^1.9.3",
+    "gulp": "^3.9.0",
+    "gulp-ng-annotate": "^1.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.2.0"
+  },
+  "devDependencies": {
+    "conventional-changelog": "^0.2.1",
+    "gulp-jshint": "^1.11.2",
+    "jshint-stylish": "^2.0.1",
+    "mversion": "^1.10.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rymizuki/angular-period.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rymizuki/angular-period/issues"
+  },
+  "homepage": "https://github.com/rymizuki/angular-period"
+}
