@@ -11,12 +11,6 @@ module.exports = (config) ->
 
     # list of files / partterns to load in the browser
     files: [
-      'node_modules/expect.js/index.js'
-      'node_modules/sinon-browser-only/sinon.js'
-      'node_modules/angular/angular.js'
-      'node_modules/angular-mocks/angular-mocks.js'
-      'dist/angular-period.min.js'
-      'test/**/*.js'
     ]
 
     # list of files to exclude

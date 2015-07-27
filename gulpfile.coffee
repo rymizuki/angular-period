@@ -1,4 +1,14 @@
 gulp = require('gulp')
+
+testFiles = [
+  'node_modules/expect.js/index.js'
+  'node_modules/sinon-browser-only/sinon.js'
+  'node_modules/angular/angular.js'
+  'node_modules/angular-mocks/angular-mocks.js'
+  'dist/angular-period.min.js'
+  'test/**/*.js'
+]
+
 gulp.task 'build', ->
   jshint    = require('gulp-jshint')
   stylish   = require('jshint-stylish')
@@ -17,18 +27,35 @@ gulp.task 'build', ->
     .pipe gulp.dest('dist')
 
 gulp.task 'test-browsers', (done) ->
-  karma = require('karma')
-  new karma.Server({
-    configFile: __dirname + '/karma.conf.coffee'
-  }, done).start()
+  karma = require('gulp-karma')
+  gulp.src(testFiles)
+    .pipe karma(
+      configFile: __dirname + '/karma.conf.coffee'
+      action: 'watch'
+    )
 
 gulp.task 'test', (done) ->
-  karma = require('karma')
-  new karma.Server({
-    configFile: __dirname + '/karma.conf.coffee'
-    singleRun: true
-    browsers: ['PhantomJS']
-  }, done).start()
+  karma = require('gulp-karma')
+  gulp.src(testFiles)
+    .pipe karma(
+      configFile: __dirname + '/karma.conf.coffee'
+      action: 'run'
+      browsers: ['PhantomJS']
+    )
+
+gulp.task 'coverage', (done) ->
+  istanbul = require('gulp-istanbul')
+  karma    = require('gulp-karma')
+  gulp.src(['src/*.js', 'src/**/*.js'])
+    .pipe istanbul({includeUntested: true})
+    .on 'finish', () ->
+      gulp.src(testFiles)
+        .pipe karma(
+          configFile: __dirname + '/karma.conf.coffee'
+          action:     'run'
+          browsers:   ['PhantomJS']
+        )
+        .pipe istanbul.writeReports()
 
 gulp.task 'watch', ->
   gulp.watch('src/**/*.js', ['build'])

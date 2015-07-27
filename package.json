@@ -6,6 +6,7 @@
   "scripts": {
     "bump": "mversion $1 -m '%s'",
     "build": "gulp build",
+    "coverage": "gulp coverage && cat ./coverage/lcov.info | codeclimate-test-reporter && rm -rf ./coverage",
     "start": "gulp",
     "test": "gulp test"
   },
@@ -24,9 +25,13 @@
   "devDependencies": {
     "angular": "^1.4.3",
     "angular-mocks": "^1.4.3",
+    "codeclimate-test-reporter": "^0.1.0",
     "conventional-changelog": "^0.2.1",
     "expect.js": "^0.3.1",
+    "gulp-istanbul": "^0.10.0",
     "gulp-jshint": "^1.11.2",
+    "gulp-karma": "0.0.4",
+    "istanbul": "^0.3.17",
     "jshint-stylish": "^2.0.1",
     "karma": "^0.13.3",
     "karma-chrome-launcher": "^0.2.0",
