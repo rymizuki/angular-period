@@ -53,6 +53,9 @@
           if ((now < startAt) && (now < endAt)) { // previous: 開始時間が未来 and 終了時間が未来
             previousTimers.push($timeout(function () {
               updatePeriodView(PERIOD_STATE_DURING);
+              previousTimers.push($timeout(function () {
+                updatePeriodView(PERIOD_STATE_AFTER);
+              }, (endAt - new Date().getTime())));
             }, (startAt - now)));
             periodState = PERIOD_STATE_PREV;
           } else if ((startAt <= now) && (now <= endAt)) { // during: 開始時間が過去 and 終了時間が未来

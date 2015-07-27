@@ -16,7 +16,21 @@ gulp.task 'build', ->
     .pipe rename({suffix: '.min'})
     .pipe gulp.dest('dist')
 
+gulp.task 'test-browsers', (done) ->
+  karma = require('karma')
+  new karma.Server({
+    configFile: __dirname + '/karma.conf.coffee'
+  }, done).start()
+
+gulp.task 'test', (done) ->
+  karma = require('karma')
+  new karma.Server({
+    configFile: __dirname + '/karma.conf.coffee'
+    singleRun: true
+    browsers: ['PhantomJS']
+  }, done).start()
+
 gulp.task 'watch', ->
   gulp.watch('src/**/*.js', ['build'])
 
-gulp.task 'default', ['watch']
+gulp.task 'default', ['watch', 'test-browsers']
