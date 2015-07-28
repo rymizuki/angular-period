@@ -3,6 +3,7 @@
 [AngularJS](https://angularjs.org/) directive for switching the DOM in the period.
 
 [![Build Status](https://travis-ci.org/rymizuki/angular-period.svg?branch=master)](https://travis-ci.org/rymizuki/angular-period)
+[![Codacy Badge](https://www.codacy.com/project/badge/5d397cce7c904909a1e26d69bd7f6a99)](https://www.codacy.com/app/ry-mizuki/angular-period)
 [![Code Climate](https://codeclimate.com/github/rymizuki/angular-period/badges/gpa.svg)](https://codeclimate.com/github/rymizuki/angular-period)
 [![Test Coverage](https://codeclimate.com/github/rymizuki/angular-period/badges/coverage.svg)](https://codeclimate.com/github/rymizuki/angular-period/coverage)
 [![Dependency Status](https://gemnasium.com/rymizuki/angular-period.svg)](https://gemnasium.com/rymizuki/angular-period) 
