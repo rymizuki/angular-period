@@ -3,6 +3,7 @@
       PERIOD_STATE_DURING = 'during',
       PERIOD_STATE_AFTER  = 'after'
   ;
+  var INT32MAX = 2147483647;
 
   // copy from angularjs v1.3.15
   function getBlockNodes(nodes) {
@@ -18,6 +19,36 @@
     } while (node !== endNode);
 
     return angular.element(blockNodes);
+  }
+
+  function getTimeToUpdate (from, to) {
+    var time = to - from;
+    if (INT32MAX < time) {
+      return INT32MAX;
+    } else {
+      return time;
+    }
+  }
+
+  function checkState (from, to) {
+    var now = new Date().getTime();
+    var state;
+    switch (false) {
+      // previous: it is a future start time and future end time.
+      case !((now < from) && (now < to)):
+        state = PERIOD_STATE_PREV;
+        break;
+      // during: It is a past start time and future end time.
+      case !((from <= now) && (now <= to)):
+        state = PERIOD_STATE_DURING;
+        break;
+      // after: It is a past start time and past end time.
+      case !((to < now) && (from < now)):
+        state = PERIOD_STATE_AFTER;
+        break;
+    }
+    console.log('[ngPeriod] check state', state, from, to, now);
+    return state;
   }
 
   // @inject
@@ -39,42 +70,40 @@
           var startAtStr = scope.$eval(attr.ngPeriodStart),
               endAtStr   = scope.$eval(attr.ngPeriodEnd)
           ;
+          console.log('watch action', attr.ngPeriodStart, startAtStr, attr.ngPeriodEnd, endAtStr);
           if (!startAtStr || !endAtStr) return;
 
           var startAt = new Date(startAtStr).getTime(),
-              endAt   = new Date(endAtStr).getTime(),
-              now     = new Date().getTime()
+              endAt   = new Date(endAtStr).getTime()
           ;
-          var periodState = null;
 
+          updatePeriodView(startAt, endAt);
+        }
+
+        function __splicePreviousLeaveAnimations (index) {
+          return function () {
+            previousLeaveAnimations.splice(index, 1);
+          };
+        }
+
+        function updatePeriodView (from, to) {
           for (var index=0; index<previousTimers.length; index++)
             $timeout.cancel(previousTimers[index]);
 
-          if ((now < startAt) && (now < endAt)) { // previous: it is a future start time and future end time.
-            previousTimers.push($timeout(function () {
-              updatePeriodView(PERIOD_STATE_DURING);
-              previousTimers.push($timeout(function () {
-                updatePeriodView(PERIOD_STATE_AFTER);
-              }, (endAt - new Date().getTime())));
-            }, (startAt - now)));
-            periodState = PERIOD_STATE_PREV;
-          } else if ((startAt <= now) && (now <= endAt)) { // during: It is a past start time and future end time.
-            previousTimers.push($timeout(function () {
-              updatePeriodView(PERIOD_STATE_AFTER);
-            }, (endAt - now)));
-            periodState = PERIOD_STATE_DURING;
-          } else if ((endAt < now) && (startAt < now)) { // after: It is a past start time and past end time.
-            periodState = PERIOD_STATE_AFTER;
+          var periodState = checkState(from, to);
+          console.log('[ngPeriod] current state is "%s"', periodState);
+          var now = new Date().getTime();
+          // set timer for state change to 'during'
+          if (periodState === PERIOD_STATE_PREV) {
+            console.log('[ngPeriod] set timer for stage change to "during"', getTimeToUpdate(now, from));
+            previousTimers.push($timeout(function () { updatePeriodView(from, to); }, getTimeToUpdate(now, from)));
           }
-          updatePeriodView(periodState);
-        }
+          // set timer for state change to 'after'
+          if (periodState === PERIOD_STATE_DURING) {
+            console.log('[ngPeriod] set timer for stage change to "after"', getTimeToUpdate(now, to));
+            previousTimers.push($timeout(function () { updatePeriodView(from, to); }, getTimeToUpdate(now, to)));
+          }
 
-        function updatePeriodView (periodState) {
-          function __splicePreviousLeaveAnimations (index) {
-            return function () {
-              previousLeaveAnimations.splice(index, 1);
-            };
-          }
           for (var index = 0; index < previousLeaveAnimations.length; index++)
             $animate.cancel(previousLeaveAnimations[index]);
           for (var index = 0; index < selectedScopes.length; index++) {

@@ -2,8 +2,8 @@ describe('angularPeriod', function () {
   var $compile,
       $rootScope,
       $timeout,
-      now,
-      clock;
+      clock,
+      now;
   beforeEach(module('angularPeriod'));
   beforeEach(inject(function (_$compile_, _$rootScope_, _$timeout_) {
     $compile    = _$compile_;
@@ -11,11 +11,13 @@ describe('angularPeriod', function () {
     $timeout    = _$timeout_;
   }));
   beforeEach(function () {
-    now   = new Date();
-    clock = sinon.useFakeTimers(now.getTime());
+    clock = sinon.useFakeTimers();
   });
   afterEach(function () {
     clock.restore();
+  });
+  beforeEach(function () {
+    now = new Date();
   });
 
   var dom = '<div ng-period ng-period-start="startAt" ng-period-end="endAt">'+
@@ -28,8 +30,8 @@ describe('angularPeriod', function () {
     var $scope;
     beforeEach(function () {
       $scope = $rootScope.$new();
-      $scope.startAt = now.getTime() + 10000;
-      $scope.endAt   = now.getTime() + 20000;
+      $scope.startAt = now.getTime() + 1000;
+      $scope.endAt   = now.getTime() + 2000;
     });
     afterEach(function () {
       $scope.$destroy();
@@ -45,8 +47,8 @@ describe('angularPeriod', function () {
     describe('after lapse of time of up to start', function () {
       it('should be activate during', function() {
         var element = $compile(dom)($scope); $rootScope.$digest();
-        clock.tick(10000 + 10);
-        $timeout.flush();
+        clock.tick(1000);
+        $timeout.flush(1000);
         $rootScope.$digest();
         expect(element.html()).to.be.eql(
           '  <!-- ngPeriodWhen: previous -->'+
@@ -58,8 +60,8 @@ describe('angularPeriod', function () {
     describe('after lapse of time of up to end', function () {
       it('should be activate after', function() {
         var element = $compile(dom)($scope); $rootScope.$digest();
-        clock.tick(20000 + 10);
-        $timeout.flush();
+        clock.tick(2001);
+        $timeout.flush(2001);
         $rootScope.$digest();
         expect(element.html()).to.be.eql(
           '  <!-- ngPeriodWhen: previous -->'+
@@ -87,11 +89,24 @@ describe('angularPeriod', function () {
         '  <!-- ngPeriodWhen: after -->'
       );
     });
+    describe('after lapse of time of a little', function () {
+      it('should not changed from during', function() {
+        var element = $compile(dom)($scope); $rootScope.$digest();
+        clock.tick(1000);
+        $timeout.flush(1000);
+        $rootScope.$digest();
+        expect(element.html()).to.be.eql(
+          '  <!-- ngPeriodWhen: previous -->'+
+          '  <!-- ngPeriodWhen: during --><div ng-period-when="during" class="ng-scope">during</div><!-- end ngPeriodWhen: -->'+
+          '  <!-- ngPeriodWhen: after -->'
+        );
+      });
+    });
     describe('after lapse of time of up to end', function () {
       it('should be activate after', function() {
         var element = $compile(dom)($scope); $rootScope.$digest();
-        clock.tick(20000 + 10);
-        $timeout.flush();
+        clock.tick(10001);
+        $timeout.flush(10000);
         $rootScope.$digest();
         expect(element.html()).to.be.eql(
           '  <!-- ngPeriodWhen: previous -->'+
@@ -101,7 +116,7 @@ describe('angularPeriod', function () {
       });
     });
   });
-  describe('period specified during', function () {
+  describe('period specified after', function () {
     var $scope;
     beforeEach(function () {
       $scope = $rootScope.$new();
@@ -111,14 +126,102 @@ describe('angularPeriod', function () {
     afterEach(function () {
       $scope.$destroy();
     });
-    describe('after lapse of time of up to end', function () {
-      it('should be activate after', function() {
+    it('should be activate after', function() {
+      var element = $compile(dom)($scope); $rootScope.$digest();
+      expect(element.html()).to.be.eql(
+        '  <!-- ngPeriodWhen: previous -->'+
+        '  <!-- ngPeriodWhen: during -->'+
+        '  <!-- ngPeriodWhen: after --><div ng-period-when="after" class="ng-scope">after</div><!-- end ngPeriodWhen: -->'
+      );
+    });
+  });
+  describe('period specified duration int32Max', function () {
+    var int32Max = 2147483647;
+    var $scope;
+    beforeEach(function () {
+      $scope = $rootScope.$new();
+    });
+    afterEach(function () {
+      $scope.$destroy();
+    });
+    describe('within int32Max', function () {
+      beforeEach(function () {
+        $scope.startAt = now.getTime() - 10000;
+        $scope.endAt   = now.getTime() + int32Max;
+      });
+      it('should be activate during', function() {
         var element = $compile(dom)($scope); $rootScope.$digest();
         expect(element.html()).to.be.eql(
           '  <!-- ngPeriodWhen: previous -->'+
-          '  <!-- ngPeriodWhen: during -->'+
-          '  <!-- ngPeriodWhen: after --><div ng-period-when="after" class="ng-scope">after</div><!-- end ngPeriodWhen: -->'
+          '  <!-- ngPeriodWhen: during --><div ng-period-when="during" class="ng-scope">during</div><!-- end ngPeriodWhen: -->'+
+          '  <!-- ngPeriodWhen: after -->'
         );
+      });
+      describe('after lapse of time of a little', function () {
+        it('should not changed from during', function() {
+          var element = $compile(dom)($scope); $rootScope.$digest();
+          clock.tick(1000);
+          $timeout.flush(1000);
+          $rootScope.$digest();
+          expect(element.html()).to.be.eql(
+            '  <!-- ngPeriodWhen: previous -->'+
+            '  <!-- ngPeriodWhen: during --><div ng-period-when="during" class="ng-scope">during</div><!-- end ngPeriodWhen: -->'+
+            '  <!-- ngPeriodWhen: after -->'
+          );
+        });
+      });
+      describe('after lapse of time of up to end', function () {
+        it('should be activate after', function() {
+          var element = $compile(dom)($scope); $rootScope.$digest();
+          clock.tick(int32Max + 1);
+          $timeout.flush(int32Max + 1);
+          $rootScope.$digest();
+          expect(element.html()).to.be.eql(
+            '  <!-- ngPeriodWhen: previous -->'+
+            '  <!-- ngPeriodWhen: during -->'+
+            '  <!-- ngPeriodWhen: after --><div ng-period-when="after" class="ng-scope">after</div><!-- end ngPeriodWhen: -->'
+          );
+        });
+      });
+    });
+    describe('over the int32Max', function () {
+      beforeEach(function () {
+        $scope.startAt = now.getTime() - 10000;
+        $scope.endAt   = now.getTime() + int32Max + 1;
+      });
+      it('should be activate during', function() {
+        var element = $compile(dom)($scope); $rootScope.$digest();
+        expect(element.html()).to.be.eql(
+          '  <!-- ngPeriodWhen: previous -->'+
+          '  <!-- ngPeriodWhen: during --><div ng-period-when="during" class="ng-scope">during</div><!-- end ngPeriodWhen: -->'+
+          '  <!-- ngPeriodWhen: after -->'
+        );
+      });
+      describe('after lapse of time of a little', function () {
+        it('should not changed from during', function() {
+          var element = $compile(dom)($scope); $rootScope.$digest();
+          clock.tick(1000);
+          $timeout.flush(1000);
+          $rootScope.$digest();
+          expect(element.html()).to.be.eql(
+            '  <!-- ngPeriodWhen: previous -->'+
+            '  <!-- ngPeriodWhen: during --><div ng-period-when="during" class="ng-scope">during</div><!-- end ngPeriodWhen: -->'+
+            '  <!-- ngPeriodWhen: after -->'
+          );
+        });
+      });
+      describe('after lapse of time of up to end', function () {
+        it('should be activate after', function() {
+          var element = $compile(dom)($scope); $rootScope.$digest();
+          clock.tick(int32Max + 2);
+          $timeout.flush(int32Max + 2);
+          $rootScope.$digest();
+          expect(element.html()).to.be.eql(
+            '  <!-- ngPeriodWhen: previous -->'+
+            '  <!-- ngPeriodWhen: during -->'+
+            '  <!-- ngPeriodWhen: after --><div ng-period-when="after" class="ng-scope">after</div><!-- end ngPeriodWhen: -->'
+          );
+        });
       });
     });
   });
