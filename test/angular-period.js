@@ -116,7 +116,7 @@ describe('angularPeriod', function () {
       });
     });
   });
-  describe('period specified during', function () {
+  describe('period specified after', function () {
     var $scope;
     beforeEach(function () {
       $scope = $rootScope.$new();
@@ -126,15 +126,13 @@ describe('angularPeriod', function () {
     afterEach(function () {
       $scope.$destroy();
     });
-    describe('after lapse of time of up to end', function () {
-      it('should be activate after', function() {
-        var element = $compile(dom)($scope); $rootScope.$digest();
-        expect(element.html()).to.be.eql(
-          '  <!-- ngPeriodWhen: previous -->'+
-          '  <!-- ngPeriodWhen: during -->'+
-          '  <!-- ngPeriodWhen: after --><div ng-period-when="after" class="ng-scope">after</div><!-- end ngPeriodWhen: -->'
-        );
-      });
+    it('should be activate after', function() {
+      var element = $compile(dom)($scope); $rootScope.$digest();
+      expect(element.html()).to.be.eql(
+        '  <!-- ngPeriodWhen: previous -->'+
+        '  <!-- ngPeriodWhen: during -->'+
+        '  <!-- ngPeriodWhen: after --><div ng-period-when="after" class="ng-scope">after</div><!-- end ngPeriodWhen: -->'
+      );
     });
   });
   describe('period specified duration int32Max', function () {
@@ -215,8 +213,8 @@ describe('angularPeriod', function () {
       describe('after lapse of time of up to end', function () {
         it('should be activate after', function() {
           var element = $compile(dom)($scope); $rootScope.$digest();
-          clock.tick(int32Max + 1);
-          $timeout.flush(int32Max + 1);
+          clock.tick(int32Max + 2);
+          $timeout.flush(int32Max + 2);
           $rootScope.$digest();
           expect(element.html()).to.be.eql(
             '  <!-- ngPeriodWhen: previous -->'+
