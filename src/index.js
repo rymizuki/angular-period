@@ -92,10 +92,15 @@
           var periodState = checkState(from, to);
           console.debug('[ngPeriod] current state is "%s"', periodState);
           var now = new Date().getTime();
-          // set timer for state change to 'during' or set timer for state change to 'after'
-          if (periodState === PERIOD_STATE_PREV || periodState === PERIOD_STATE_DURING) {
-            console.debug('[ngPeriod] set timer for stage change to "from"', periodState, getTimeToUpdate(now, from));
+          // set timer for state change to 'during'
+          if (periodState === PERIOD_STATE_PREV) {
+            console.debug('[ngPeriod] set timer for stage change to "during"', getTimeToUpdate(now, from));
             previousTimers.push($timeout(function () { updatePeriodView(from, to); }, getTimeToUpdate(now, from)));
+          }
+          // set timer for state change to 'after'
+          if (periodState === PERIOD_STATE_DURING) {
+            console.debug('[ngPeriod] set timer for stage change to "after"', getTimeToUpdate(now, to));
+            previousTimers.push($timeout(function () { updatePeriodView(from, to); }, getTimeToUpdate(now, to)));
           }
 
           for (var index = 0; index < previousLeaveAnimations.length; index++)
