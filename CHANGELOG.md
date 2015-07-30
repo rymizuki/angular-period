@@ -1,3 +1,16 @@
+<a name="0.1.1"></a>
+## 0.1.1 (2015-07-30)
+
+
+### docs
+
+* docs(README): add badge.fury's badge for npm and bower
+ ([f41b4ab](https://github.com/rymizuki/angular-period/commit/f41b4ab))
+* docs(README): update installtion
+ ([ba57739](https://github.com/rymizuki/angular-period/commit/ba57739))
+
+
+
 <a name="0.1.0"></a>
 # 0.1.0 (2015-07-30)
 
