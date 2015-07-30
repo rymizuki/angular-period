@@ -12,12 +12,12 @@
 
 use [bower](http://bower.io/):
 ```
-bower install --save 'git://github.com/rymiuzki/angular-period.git#vX.Y.Z'
+bower install --save angular-period
 ```
 
 use [npm](https://www.npmjs.com/):
 ```
-npm install --save 'git://github.com/rymizuki/angular-period.git#vX.Y.Z'
+npm install --save angular-period
 ```
 
 ## Usage
