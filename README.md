@@ -39,7 +39,7 @@ Add the directive in your module.
 
 ```html
 <body>
-  <div ng-period ng-period-start="'2015-06-22 00:00:00'" ng-period-end="'2015-06-29 23:59:59'">
+  <div ng-period ng-period-start="'2015-06-22T00:00:00'" ng-period-end="'2015-06-29T23:59:59'">
     <div ng-period-when="previous">
       <p>The previous period when this section is displayed.</p>
     </div>
@@ -52,6 +52,13 @@ Add the directive in your module.
   </div>
 </body>
 ```
+
+## About date parsing
+
+`ngPeriod` dosen't support date string parsing.
+
+If you seek safety, please specify the `Date Object` or [momentjs](http://momentjs.com/) etc.
+Date class that compatible with the library in ngperiod.
 
 ## LICENSE
 
