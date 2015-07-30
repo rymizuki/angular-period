@@ -47,7 +47,7 @@
         state = PERIOD_STATE_AFTER;
         break;
     }
-    console.log('[ngPeriod] check state', state, from, to, now);
+    console.debug('[ngPeriod] check state', state, from, to, now);
     return state;
   }
 
@@ -70,7 +70,6 @@
           var startAtStr = scope.$eval(attr.ngPeriodStart),
               endAtStr   = scope.$eval(attr.ngPeriodEnd)
           ;
-          console.log('watch action', attr.ngPeriodStart, startAtStr, attr.ngPeriodEnd, endAtStr);
           if (!startAtStr || !endAtStr) return;
 
           var startAt = new Date(startAtStr).getTime(),
@@ -91,17 +90,17 @@
             $timeout.cancel(previousTimers[index]);
 
           var periodState = checkState(from, to);
-          console.log('[ngPeriod] current state is "%s"', periodState);
+          console.debug('[ngPeriod] current state is "%s"', periodState);
           var now = new Date().getTime();
           // set timer for state change to 'during'
           if (periodState === PERIOD_STATE_PREV) {
-            console.log('[ngPeriod] set timer for stage change to "during"', getTimeToUpdate(now, from));
-            previousTimers.push($timeout(function () { updatePeriodView(from, to); }, getTimeToUpdate(now, from)));
+            console.debug('[ngPeriod] set timer for stage change to "during"', getTimeToUpdate(now, from));
+            previousTimers.push($timeout(updatePeriodView, getTimeToUpdate(now, from), true, from, to));
           }
           // set timer for state change to 'after'
           if (periodState === PERIOD_STATE_DURING) {
-            console.log('[ngPeriod] set timer for stage change to "after"', getTimeToUpdate(now, to));
-            previousTimers.push($timeout(function () { updatePeriodView(from, to); }, getTimeToUpdate(now, to)));
+            console.debug('[ngPeriod] set timer for stage change to "after"', getTimeToUpdate(now, to));
+            previousTimers.push($timeout(updatePeriodView, getTimeToUpdate(now, to), true, from, to));
           }
 
           for (var index = 0; index < previousLeaveAnimations.length; index++)

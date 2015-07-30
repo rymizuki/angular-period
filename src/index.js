@@ -95,12 +95,12 @@
           // set timer for state change to 'during'
           if (periodState === PERIOD_STATE_PREV) {
             console.debug('[ngPeriod] set timer for stage change to "during"', getTimeToUpdate(now, from));
-            previousTimers.push($timeout(function () { updatePeriodView(from, to); }, getTimeToUpdate(now, from)));
+            previousTimers.push($timeout(updatePeriodView, getTimeToUpdate(now, from), true, from, to));
           }
           // set timer for state change to 'after'
           if (periodState === PERIOD_STATE_DURING) {
             console.debug('[ngPeriod] set timer for stage change to "after"', getTimeToUpdate(now, to));
-            previousTimers.push($timeout(function () { updatePeriodView(from, to); }, getTimeToUpdate(now, to)));
+            previousTimers.push($timeout(updatePeriodView, getTimeToUpdate(now, to), true, from, to));
           }
 
           for (var index = 0; index < previousLeaveAnimations.length; index++)
