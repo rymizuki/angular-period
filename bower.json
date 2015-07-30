@@ -1,6 +1,6 @@
 {
   "name": "angular-period",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "homepage": "https://github.com/rymizuki/angular-period",
   "description": "AngularJS Directive for switching the DOM in the period.",
   "main": "dist/angular-period.min.js",
