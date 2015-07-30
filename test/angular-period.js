@@ -2,13 +2,17 @@ describe('angularPeriod', function () {
   var $compile,
       $rootScope,
       $timeout,
+      $exceptionHandler,
       clock,
       now;
-  beforeEach(module('angularPeriod'));
-  beforeEach(inject(function (_$compile_, _$rootScope_, _$timeout_) {
+  beforeEach(module('angularPeriod', function ($exceptionHandlerProvider) {
+    $exceptionHandlerProvider.mode('log');
+  }));
+  beforeEach(inject(function (_$compile_, _$rootScope_, _$timeout_, _$exceptionHandler_) {
     $compile    = _$compile_;
     $rootScope  = _$rootScope_;
     $timeout    = _$timeout_;
+    $exceptionHandler = _$exceptionHandler_;
   }));
   beforeEach(function () {
     clock = sinon.useFakeTimers();
@@ -222,6 +226,77 @@ describe('angularPeriod', function () {
             '  <!-- ngPeriodWhen: after --><div ng-period-when="after" class="ng-scope">after</div><!-- end ngPeriodWhen: -->'
           );
         });
+      });
+    });
+  });
+  describe('specified date type', function () {
+    var dom;
+    describe('string format for range feiled', function () {
+      beforeEach(function () {
+        dom = '<div ng-period ng-period-start="\'2015-07-31 33:22:11\'" ng-period-end="\'2015-08-31 33:22:11\'">'+
+              '  <div ng-period-when="previous">previous</div>'+
+              '  <div ng-period-when="during">during</div>'+
+              '  <div ng-period-when="after">after</div>'+
+              '</div>';
+      });
+
+      it('should be has be error', function () {
+        $compile(dom)($rootScope);
+        $rootScope.$digest();
+        expect($exceptionHandler.errors).to.have.length(2);
+      });
+    });
+    describe('string fromat accept to "YYYY-MM-DDTHH:mm:ss"', function () {
+      beforeEach(function () {
+        dom = '<div ng-period ng-period-start="\'2015-07-31T23:22:11\'" ng-period-end="\'2015-08-31T23:22:11\'">'+
+              '  <div ng-period-when="previous">previous</div>'+
+              '  <div ng-period-when="during">during</div>'+
+              '  <div ng-period-when="after">after</div>'+
+              '</div>';
+      });
+
+      it('should be accept', function () {
+        $compile(dom)($rootScope);
+        $rootScope.$digest();
+        expect($exceptionHandler.errors).to.have.length(0);
+      });
+    });
+    describe('Date object', function () {
+      var $scope;
+      beforeEach(function () {
+        $scope = $rootScope.$new();
+        $scope.start = new Date();
+        $scope.start = new Date(new Date().getTime() + 1000);
+        dom = '<div ng-period ng-period-start="start" ng-period-end="end">'+
+              '  <div ng-period-when="previous">previous</div>'+
+              '  <div ng-period-when="during">during</div>'+
+              '  <div ng-period-when="after">after</div>'+
+              '</div>';
+      });
+
+      it('should be accept', function () {
+        $compile(dom)($scope);
+        $rootScope.$digest();
+        expect($exceptionHandler.errors).to.have.length(0);
+      });
+    });
+    describe('moment.js object', function () {
+      var $scope;
+      beforeEach(function () {
+        $scope = $rootScope.$new();
+        $scope.start = moment('2015-07-30 11:22:33');
+        $scope.start = moment('2015-08-30 11:22:33');
+        dom = '<div ng-period ng-period-start="start" ng-period-end="end">'+
+              '  <div ng-period-when="previous">previous</div>'+
+              '  <div ng-period-when="during">during</div>'+
+              '  <div ng-period-when="after">after</div>'+
+              '</div>';
+      });
+
+      it('should be accept', function () {
+        $compile(dom)($scope);
+        $rootScope.$digest();
+        expect($exceptionHandler.errors).to.have.length(0);
       });
     });
   });

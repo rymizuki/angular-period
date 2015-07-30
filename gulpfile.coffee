@@ -5,6 +5,7 @@ testFiles = [
   'node_modules/sinon-browser-only/sinon.js'
   'node_modules/angular/angular.js'
   'node_modules/angular-mocks/angular-mocks.js'
+  'node_modules/moment/min/moment-with-locales.js'
   'dist/angular-period.min.js'
   'test/**/*.js'
 ]

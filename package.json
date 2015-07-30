@@ -40,6 +40,7 @@
     "karma-safari-launcher": "^0.1.1",
     "karma-spec-reporter": "0.0.20",
     "mocha": "^2.2.5",
+    "moment": "^2.10.6",
     "mversion": "^1.10.0",
     "phantomjs": "^1.9.17",
     "sinon-browser-only": "^1.12.1"

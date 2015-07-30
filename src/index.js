@@ -3,7 +3,8 @@
       PERIOD_STATE_DURING = 'during',
       PERIOD_STATE_AFTER  = 'after'
   ;
-  var INT32MAX = 2147483647;
+  var INT32MAX          = 2147483647,
+      INVALID_DATE_STR  = 'Invalid Date';
 
   // copy from angularjs v1.3.15
   function getBlockNodes(nodes) {
@@ -28,6 +29,15 @@
     } else {
       return time;
     }
+  }
+
+  function parseDate(stuff) {
+    var result = new Date(stuff);
+    if (result.toString() === INVALID_DATE_STR) {
+      throw new Error('InvalidDate! ng-period can\'t parse "'+stuff+'"');
+    }
+    console.debug('parse to', result, stuff);
+    return result;
   }
 
   function checkState (from, to) {
@@ -67,13 +77,13 @@
         ;
 
         function ngPeriodWatchAction () {
-          var startAtStr = scope.$eval(attr.ngPeriodStart),
-              endAtStr   = scope.$eval(attr.ngPeriodEnd)
+          var startAtStuff = scope.$eval(attr.ngPeriodStart),
+              endAtStuff   = scope.$eval(attr.ngPeriodEnd)
           ;
-          if (!startAtStr || !endAtStr) return;
+          if (!startAtStuff || !endAtStuff) return;
 
-          var startAt = new Date(startAtStr).getTime(),
-              endAt   = new Date(endAtStr).getTime()
+          var startAt = parseDate(startAtStuff).getTime(),
+              endAt   = parseDate(endAtStuff).getTime()
           ;
 
           updatePeriodView(startAt, endAt);
